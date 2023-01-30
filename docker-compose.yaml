@@ -1,0 +1,27 @@
+version: '3.3'
+
+services: 
+    humble:
+        image: gnap114039/ros2:humble
+        user: 1000:1000
+        hostname: humble_ws
+        container_name: humble_ws # docker run --name ros_simulation
+        build: 
+            context: ./
+            dockerfile: ./Dockerfile
+        environment: 
+            - DISPLAY
+            - QT_X11_NO_MITSHM=1
+            # - FASTRTPS_DEFAULT_PROFILES_FILE=fastrtps-profile.xml
+        volumes: # docker run -v / --volume
+            - /tmp/.X11-unix:/tmp/.X11-unix:rw
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+            - ./:/ws
+        # group_add:
+        #     - video
+        devices:
+            - /dev/dri:/dev/dri # For H/W transcoding
+        # network_mode: "host" # docker run --net=host
+        stdin_open: true # docker run -i
+        tty: true # docker run -t
